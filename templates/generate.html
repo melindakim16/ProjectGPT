@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ProjectGPT – Storybook Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../static/favicon.png" type="image/x-icon">
+<link rel="apple-touch-icon" href="../static/apple-touch-icon.png">
+
+  <style>
+    body {
+      background-color: #f7f9fc;
+      font-family: 'Inter', sans-serif;
+      color: #2c3e50;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-weight: 700;
+      color: #34495e;
+    }
+
+    .card {
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .form-control, .form-select {
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ced4da;
+    }
+
+    .btn-generate {
+      background: linear-gradient(135deg, #5a67d8, #805ad5);
+      color: #fff;
+      font-weight: 600;
+      padding: 0.75rem 2rem;
+      border-radius: 2rem;
+      transition: all 0.3s;
+    }
+    .btn-generate:hover {
+      background: linear-gradient(135deg, #4c51bf, #6b46c1);
+    }
+
+    .btn-read {
+      background-color: #48bb78;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.5rem 1.5rem;
+      border-radius: 2rem;
+      transition: background-color 0.3s;
+    }
+    .btn-read:hover {
+      background-color: #38a169;
+    }
+
+    .btn-download {
+      background-color: #ed8936;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.5rem 1.5rem;
+      border-radius: 2rem;
+      transition: background-color 0.3s;
+    }
+    .btn-download:hover {
+      background-color: #dd6b20;
+    }
+
+    @media (max-width: 768px) {
+      .btn-generate, .btn-read, .btn-download {
+        width: 100%;
+        padding: 0.75rem;
+      }
+    }
+
+    /* Storybook Cover Style */
+    .storybook-cover {
+      background: linear-gradient(135deg, #fffaf4, #fef9f2);
+      border: 6px solid #e4d7c4;
+      border-radius: 1.5rem;
+      padding: 3rem 2rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      font-family: 'Playfair Display', serif;
+      position: relative;
+    }
+
+    .storybook-cover img {
+      max-height: 350px;
+      object-fit: cover;
+      border: 5px solid #f0e6d2;
+      border-radius: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .storybook-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #4b3f29;
+    }
+
+    .storybook-subtitle {
+      font-size: 1.2rem;
+      color: #7a6a58;
+      margin-bottom: 1.5rem;
+    }
+
+    .storybook-meta {
+      font-size: 1rem;
+      color: #5c5142;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .storybook-meta strong {
+      color: #2d2d2d;
+    }
+
+    .storybook-footer {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 2rem;
+    }
+    .display-4 {
+  margin-top: 6rem;
+  margin-bottom: 0.5rem;
+}
+#fullpage-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  display: none;
+}
+
+#fullpage-loader .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+  .btn-custom-ok {
+    color: #e4a9f8;
+    border: 2px solid #e4a9f8;
+    background-color: transparent;
+    transition: all 0.2s ease;
+  }
+
+  .btn-custom-ok:hover {
+    background-color: #e4a9f8;
+    color: white;
+  }
+
+  </style>
+</head>
+<body>
+
+  {% include 'nav.html' %}
+
+  <div class="container my-5">
+      <div class="container text-center mt-5">
+        <h1 class="fw-bold mb-3" style="font-size: 2.5rem; font-family: 'Playfair Display', serif; color: #2c3e50; margin-top: 100px;">
+          <span style="background: linear-gradient(to right, #7f56d9, #5e60ce); -webkit-background-clip: text; color: transparent;">
+            ProjectGPT
+          </span> Storybook Generator
+        </h1>
+        <p class="lead" style="font-family: 'Inter', sans-serif; color: #4b5563; max-width: 700px; margin: 0 auto;">
+          A beautifully simple tool to create personalized, educational storybooks for young learners — instantly.
+        </p>
+      </div>
+
+
+
+
+    <div class="row gx-4 gy-4 mt-4" >
+      <!-- Left Column: Generate Form -->
+      <div class="col-lg-6">
+        <div class="card p-4">
+          <h1 class="h4 text-center mb-4"><strong>Generate Story</strong></h1>
+          <form action="{{url_for('generate')}}" method="POST" id="generate-form">
+            <div class="mb-3">
+              <label for="field" class="form-label">Field</label>
+<!--              <select id="field" name="field" class="form-select" required>-->
+<!--                <option value="Environmental Science" selected>Environmental Science</option>-->
+<!--                <option value="Biology">Biology</option>-->
+<!--                <option value="Astronomy">Astronomy</option>-->
+<!--                <option value="Business">Business</option>-->
+<!--                <option value="Chemistry">Chemistry</option>-->
+<!--              </select>-->
+              <input type="text" id="field" name="field" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="topic" class="form-label">Topic</label>
+<!--              <select id="topic" name="topic" class="form-select" required>-->
+<!--                <option value="The Water Cycle" selected>The Water Cycle</option>-->
+<!--                <option value="Photosynthesis">Photosynthesis</option>-->
+<!--                <option value="Planets of the Solar System">Planets of the Solar System</option>-->
+<!--                <option value="Saving Money">Saving Money</option>-->
+<!--                <option value="chem">Saving Money</option>-->
+<!--              </select>-->
+              <input type="text" id="topic" name="topic" class="form-control" required>
+            </div>
+            <div class="row gx-2">
+              <div class="col-6 mb-3">
+                <label for="grade" class="form-label">School Grade</label>
+                <select id="grade" name="grade" class="form-select" required>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3" selected>3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+              <div class="col-6 mb-3">
+                <label for="age" class="form-label">Age</label>
+                <select id="age" name="age" class="form-select" required>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9" selected>9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="gender" class="form-label">Gender</label>
+              <select id="gender" name="gender" class="form-select" required>
+                <option value="any">Any</option>
+                <option value="boy">Boy</option>
+                <option value="girl" selected>Girl</option>
+              </select>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-generate">Generate Story</button>
+            </div>
+
+            <div id="loading-spinner" class="text-center mt-3" style="display:none;">
+              <div class="spinner-border text-primary" role="status"></div>
+              <p class="mt-2 mb-0">Generating your story...It takes 3-5 minutes. Please be patients.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+
+        <!-- Right Column: Storybook Cover -->
+        <div class="col-lg-6">
+          <div class="storybook-cover text-center h-100 d-flex flex-column justify-content-center align-items-center">
+
+            {% if title %}
+              <img src="{{ images[0] if images else '/static/images/default.jpg' }}" alt="Story Cover" class="shadow-sm" />
+              <h2 class="storybook-title">{{ title }}</h2>
+              <p class="storybook-subtitle">{{ subtitle }}</p>
+
+              <div class="storybook-meta">
+                <p><strong>Field:</strong> {{ field }}</p>
+                <p><strong>Topic:</strong> {{ topic }}</p>
+                <p><strong>Grade:</strong> {{ grade }}</p>
+              </div>
+
+              <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('storybook') }}" class="btn btn-read">
+                  <i class="bi bi-book"></i> Read Story
+                </a>
+                {% if story_id %}
+                  <a href="{{ url_for('download_pdf', story_id=story_id) }}" class="btn btn-download">
+                    <i class="bi bi-download"></i> Download PDF
+                  </a>
+                {% endif %}
+
+              </div>
+
+              <p class="storybook-footer">Published by ProjectGPT</p>
+
+            {% else %}
+              <div class="text-center px-3">
+<!--                <img src="/static/images/placeholder_book.svg" alt="Placeholder" class="img-fluid mb-4" style="max-height: 180px; opacity: 0.85;" />-->
+
+                <h2 class="storybook-title" style="font-size: 1.75rem;">Ready to Create a Magical Story?</h2>
+                <p class="storybook-subtitle" style="font-size: 1rem; max-width: 400px; margin: 0 auto;">
+                  Select a topic and generate a custom educational storybook just for your young learner.
+                </p>
+
+                <div class="mt-4">
+                  <i class="bi bi-stars" style="font-size: 2rem; color: #a78bfa;"></i>
+                  <p class="storybook-footer mt-2" style="font-size: 0.9rem; color: #888;">Your story preview will appear here after generation.</p>
+                </div>
+              </div>
+            {% endif %}
+
+
+          </div>
+        </div>
+
+    </div>
+  </div>
+
+  <div id="fullpage-loader">
+  <div class="text-center">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-3 fw-semibold">Generating your storybook...</p>
+  </div>
+</div>
+<!-- Instruction Modal -->
+<div class="modal fade" id="instructionModal" tabindex="-1" aria-labelledby="instructionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header">
+        <h5 class="modal-title" id="instructionModalLabel">Welcome to ProjectGPT+ Demo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>This is a <strong>demo version</strong> of the ProjectGPT Storybook Generator.</p>
+        <p>It will generate only the <strong>first 2 pages</strong> of the storybook for preview purposes.</p>
+        <p>Please choose a field and topic, then click <strong>"Generate Story"</strong> to begin.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-custom-ok px-4 rounded-pill" data-bs-dismiss="modal">OK, Got it</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('generate-form');
+    form.addEventListener('submit', function () {
+      document.getElementById('fullpage-loader').style.display = 'flex';
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('generate-form');
+    form.addEventListener('submit', function () {
+      document.getElementById('fullpage-loader').style.display = 'flex';
+    });
+
+//    const instructionModal = new bootstrap.Modal(document.getElementById('instructionModal'));
+//    instructionModal.show();
+  });
+</script>
+
+
+</body>
+</html>

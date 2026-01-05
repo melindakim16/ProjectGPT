@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ProjectGPT – AI Storybook Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="icon" href="../static/favicon.png" type="image/x-icon">
+<link rel="apple-touch-icon" href="../static/apple-touch-icon.png">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f7fa;
+      color: #2c3e50;
+    }
+    .section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  background: linear-gradient(90deg, #6e8efb, #a777e3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+    .navbar {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      color: white;
+      overflow: hidden;
+    }
+
+    .hero video.bg-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      margin: auto;
+      text-align: center;
+      padding-top: 60px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-top: 15px;
+      color: #f1f1f1;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+    }
+
+    .btn-hero {
+      background: white;
+      color: #6e8efb;
+      border: none;
+      padding: 12px 30px;
+      font-weight: 600;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-hero:hover {
+      background: #f1f1f1;
+      color:black;
+    }
+
+    .about-section, .features, .cta {
+      padding: 80px 0;
+    }
+
+    .about-frame {
+      background: white;
+      padding: 20px;
+      border: 6px solid #f0f0f0;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-frame img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .icon-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      box-shadow: 0 4px 12px rgba(110, 142, 251, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-box:hover .icon-circle {
+      transform: scale(1.1);
+    }
+
+    .feature-box {
+      background: #f7f9fc;
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .feature-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .cta {
+      background: linear-gradient(
+          rgba(78, 84, 200, 0.5),
+          rgba(143, 148, 251, 0.5)
+        ),
+        url('/static/landing/about4.jpg') center center / cover no-repeat;
+      color: white;
+      text-align: center;
+    }
+
+
+    .cta h2 {
+      font-weight: 800;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+    }
+    .footer p{
+      margin-top: 1rem !important;
+    }
+    .hero-highlight {
+  background: linear-gradient(90deg, #6e8efb, #a777e3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-glow {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(174, 144, 255, 0.5), 0 0 20px rgba(174, 144, 255, 0.3);
+}
+
+.hero-subtle {
+  opacity: 0.85;
+  font-weight: 300;
+}
+      .client-section {
+      padding: 60px 20px;
+      text-align: center;
+        background-color: white;
+    }
+    .client-section img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
+    .description-text {
+      text-align: left;
+    }
+    .mission-section {
+      background-color: #f3f3f3;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    .mission-section h4 {
+      font-weight: 500;
+      font-size: 1.5rem;
+      color: #444;
+    }
+    .title-highlight {
+      font-weight: 700;
+      font-size: 1.6rem;
+    }
+.mission-section {
+  background-color: #f7f9fc;
+  padding: 80px 20px;
+}
+
+.mission-label {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.mission-heading {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.mission-subheading {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+  .btn-custom-ok {
+    color: #e4a9f8;
+    border: 2px solid #e4a9f8;
+    background-color: transparent;
+    transition: all 0.2s ease;
+  }
+
+  .btn-custom-ok:hover {
+    background-color: #e4a9f8;
+    color: white;
+  }
+
+
+
+  </style>
+</head>
+
+<body>
+
+{% include 'nav.html' %}
+
+<!-- Hero -->
+<section class="hero d-flex align-items-center">
+  <video class="bg-video" autoplay muted loop playsinline>
+    <source src="/static/videos/hero-background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+<div class="container hero-content">
+  <h1 class="mt-4">
+    <span class="hero-highlight">Every Child Deserves a Story That Teaches and Inspires</span>
+  </h1>
+  <p class="text-light mt-3">
+    <span class="hero-subtle">Closing the education gap, one story at a time. <br>
+Ask a Question. Get a Story</span>
+  </p>
+  <a href="/generate" class="btn btn-hero mt-4">Try it Yourself</a>
+</div>
+
+</section>
+
+<!-- About -->
+<section id="about" class="about-section">
+  <div class="container">
+<div class="row align-items-center gy-5 gx-5 mb-5">
+  <div class="col-md-6">
+    <div class="about-frame">
+      <img src="../static/landing/about1.jpg" alt="Storybook">
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h2 class="fw-bold">What is ProjectGPT+?</h2>
+    <p>Project GPT+ is a web-based educational initiative that leverages generative AI to make complex subjects accessible and engaging for young learners. By fine-tuning a GPT model, the platform creates personalized, interactive storybooks based on students’ questions or topics of interest, followed by quizzes that help learners evaluate and reinforce their understanding.</p>
+  </div>
+</div>
+
+<div class="row align-items-center flex-md-row-reverse gy-5 gx-5">
+  <div class="col-md-6">
+    <div class="about-frame">
+      <img src="../static/landing/about2.jpg" alt="AI Generated Image">
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h2 class="fw-bold">Why It Matters</h2>
+    <p>In many underserved schools, students face a serious barrier: a lack of access to quality educational materials. Without textbooks, digital tools, or engaging content, it’s difficult for children to fully understand the subjects that shape their futures. Project GPT+ responds to this challenge by using AI to generate personalized, illustrated storybooks and quizzes — making complex topics like science, business, and the environment accessible, interactive, and engaging even in low-resource settings.</p>
+  </div>
+</div>
+
+
+  </div>
+</section>
+
+<section class=" client-section">
+    <div class="container">
+<p class="d-inline-block px-3 py-1 rounded-pill bg-light text-dark fw-semibold small shadow-sm mb-3">
+  <i class="bi bi-people-fill me-1"></i> Our First Client
+</p>
+
+    <h2 class="text-center section-title fw-bold mb-5">Malabuyoc Central Elementary School</h2>
+
+    <div class="row align-items-center mt-4">
+      <div class="col-md-6">
+        <img style="width:85%;" class="d-block mx-auto" src="../static/landing/about3.jpg" alt="Malabuyoc School Group Photo" />
+      </div>
+      <div class="col-md-6 description-text">
+        <p style="text-align:justify">
+          Located in Cebu Province of the Philippines, Malabuyoc Central Elementary School has about 250 students enrolled.
+          The school faces different barriers concerning the availability of educational materials. These barriers, including
+          a lack of textbooks and other resources, have made it increasingly difficult for students to attain a comprehensive
+          education in our modern society, particularly in an era where technology is prevalent.
+        </p>
+        <p style="text-align:justify">
+          Recognizing these challenges, we are committed to supporting solutions that empower both students and educators in Malabuyoc.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mission-section text-center">
+  <div class="container">
+
+    <p class="d-inline-block px-3 py-1 rounded-pill bg-light text-dark fw-semibold small shadow-sm mb-3" style="background-color:white;">
+  <i class="bi bi-people-fill me-1"></i> Our Mission
+</p>
+    <h2 class="mission-heading">
+      Bridging educational gaps in underserved communities
+    </h2>
+    <p class="mission-subheading mt-3">
+      We aim to provide every child access to engaging, inclusive, and meaningful learning experiences — no matter their background.
+    </p>
+  </div>
+</section>
+<section id="features" class="py-5 bg-white">
+  <div class="container text-center">
+
+    <p class="d-inline-block px-3 py-1 rounded-pill bg-light text-dark fw-semibold small shadow-sm mb-3">
+ <i class="bi bi-stars me-2"></i> Core Features</p>
+    <h2 class="section-title fw-bold mb-5">What Makes ProjectGPT+ Powerful</h2>
+
+<div class="row g-4">
+  <!-- Top row: 3 cards -->
+  <div class="col-md-4">
+    <div class="feature-box d-flex flex-column h-100">
+      <div class="icon-circle mx-auto mb-3">
+        <i class="bi bi-journal-richtext"></i>
+      </div>
+      <h5 class="fw-bold text-center">AI-Generated Storybooks</h5>
+      <p class="text-muted text-center mt-auto">
+        Generates personalized, age-appropriate stories from any student question or topic.
+      </p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="feature-box d-flex flex-column h-100">
+      <div class="icon-circle mx-auto mb-3">
+        <i class="bi bi-image"></i>
+      </div>
+      <h5 class="fw-bold text-center">Visual & Audio Immersion</h5>
+      <p class="text-muted text-center mt-auto">
+        Includes AI-generated images, narration, and sound effects for an immersive experience.
+      </p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="feature-box d-flex flex-column h-100">
+      <div class="icon-circle mx-auto mb-3">
+        <i class="bi bi-patch-question-fill"></i>
+      </div>
+      <h5 class="fw-bold text-center">Interactive Quizzes</h5>
+      <p class="text-muted text-center mt-auto">
+        Creates tailored quizzes to reinforce learning after each story.
+      </p>
+    </div>
+  </div>
+
+  <!-- Bottom row: centered 2 cards -->
+  <div class="col-md-4 offset-md-2">
+    <div class="feature-box d-flex flex-column h-100">
+      <div class="icon-circle mx-auto mb-3">
+        <i class="bi bi-bar-chart-fill"></i>
+      </div>
+      <h5 class="fw-bold text-center">Personalized Dashboard</h5>
+      <p class="text-muted text-center mt-auto">
+        Track your stories, quizzes, and receive recommendations for your next learning adventure.
+      </p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="feature-box d-flex flex-column h-100">
+      <div class="icon-circle mx-auto mb-3">
+        <i class="bi bi-file-earmark-pdf-fill"></i>
+      </div>
+      <h5 class="fw-bold text-center">Downloadable PDFs</h5>
+      <p class="text-muted text-center mt-auto">
+        Easily download stories as PDFs for offline learning — perfect for classrooms with limited internet.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+</section>
+
+
+<section id="contact" class="py-5" style="background-color:#f7f9fc;">
+  <div class="container text-center">
+    <p class="d-inline-block px-3 py-1 rounded-pill bg-light text-dark fw-semibold small shadow-sm mb-3">
+      <i class="bi bi-people-fill me-1"></i> Collaboration
+    </p>
+    <h2 class="section-title fw-bold mb-3">Partner with ProjectGPT+</h2>
+    <p class="text-muted mx-auto mb-5" style="max-width: 620px;">
+      Are you an educator, developer, or nonprofit leader passionate about equitable learning? Let’s work together to empower every child with AI-powered education.
+    </p>
+
+    <form method="POST" action="/contact" id= "contactForm" class="mx-auto" style="max-width: 600px;">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <input type="text" class="form-control rounded-3" placeholder="Your Name" name="name" required>
+        </div>
+        <div class="col-md-6">
+          <input type="email" class="form-control rounded-3" placeholder="Your Email" name="email" required>
+        </div>
+        <div class="col-12">
+          <textarea class="form-control rounded-3" rows="5" placeholder="Tell us about your idea..." name="message" required></textarea>
+        </div>
+      </div>
+      <div class="text-end mt-4">
+    <button type="submit" class="btn btn-dark px-4 py-2 rounded-pill" id="submitButton">
+      <span id="submitText">Send Message</span>
+      <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+    </button>      </div>
+    </form>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section id="cta" class="cta">
+  <div class="container">
+    <h2>Ready to unlock a new way of learning?</h2>
+    <a style="color:#d182ed;" href="/generate" class="btn btn-light px-4 py-2 rounded-pill fw-bold mt-3">Create a Story</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p style="margin-top: 1rem !important;">&copy; 2025 ProjectGPT. All rights reserved.</p>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    {% if category == 'email_sent' %}
+      <div class="modal fade" id="flashModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content text-center p-4 border-0" style="border-radius: 16px;">
+            <div class="modal-body">
+              <div class="mb-3">
+                <i class="bi bi-check-circle-fill" style="font-size: 3rem; color:#e4a9f8;"></i>
+              </div>
+              <h5 class="mb-3 fw-bold">{{ message }}</h5>
+              <button type="button" class="btn mt-2 rounded-pill px-4" style="color: #e4a9f8; border: 2px solid #e4a9f8;" data-bs-dismiss="modal">
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        const flashModal = new bootstrap.Modal(document.getElementById('flashModal'));
+        window.onload = () => flashModal.show();
+      </script>
+    {% endif %}
+  {% endfor %}
+{% endwith %}
+
+<script>
+  document.getElementById("contactForm").addEventListener("submit", function () {
+    const btn = document.getElementById("submitButton");
+    const spinner = document.getElementById("spinner");
+    const text = document.getElementById("submitText");
+
+    btn.disabled = true;
+    spinner.classList.remove("d-none");
+    text.textContent = "Sending...";
+  });
+</script>
+
+</body>
+</html>

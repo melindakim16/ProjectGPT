@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generating Audio...</title>
+  <script>
+    function checkAudio() {
+      fetch(`/check_audio/{{ story_id }}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.ready) {
+            window.location.href = "/profile";
+          } else {
+            setTimeout(checkAudio, 3000); // Check again after 3 seconds
+          }
+        });
+    }
+
+    window.onload = function() {
+      checkAudio();
+    };
+  </script>
+</head>
+<body style="text-align:center; padding-top:100px; font-family:sans-serif;">
+  <h2>📚 Generating your audiobook...</h2>
+  <p>Please wait. This may take up to 1–2 minutes.</p>
+  <div style="margin-top:40px;">
+    <div class="spinner-border" role="status" style="width: 4rem; height: 4rem;"></div>
+  </div>
+</body>
+</html>
