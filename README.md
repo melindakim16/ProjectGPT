@@ -17,18 +17,18 @@ ProjectGPT is a Flask-based web application used by real students in a school se
 ## Key Features
 
 ### Storybook Generation
-- Generates an **age-appropriate story** in a strict page-based format (Title + Pages)
+- Generates an **age-appropriate story** in a strict page-based format 
 - Uses OpenAI Chat Completions to create educational narratives from student-selected inputs:
   - `field`, `topic`, `grade`, `age`, `gender`
-- Splits story text into pages and stores it in SQLite (`user_stories.story_json`)
+- Splits story text into pages and stores it in SQLite 
 
 ### Illustration Generation (Per Page)
 - Creates portrait-format children’s book illustrations using OpenAI image generation (`gpt-image-1`)
 - Tracks **image generation progress** in DB (`image_progress`) for live loading screens
-- Saves generated images to a static directory and stores **web paths** in DB (`image_json`)
+- Saves generated images to a static directory and stores **web paths** in DB 
 
 ### Audiobook Generation (Background Thread)
-- Generates MP3 audiobooks using ElevenLabs (via a helper like `generate_storybook_audio`)
+- Generates MP3 audiobooks using ElevenLabs 
 - Runs in a background thread so the UI stays responsive
 - Provides endpoints to check readiness:
   - `/check_audio/<story_id>`
@@ -47,18 +47,11 @@ ProjectGPT is a Flask-based web application used by real students in a school se
 
 ### Quiz System (Per Story + Daily Quiz)
 - Generates 10 multiple-choice questions per story using OpenAI
-- Stores questions/options/answers in SQLite (`user_story_quiz`)
+- Stores questions/options/answers in SQLite 
 - Supports:
   - Web form quiz submit
   - API-style submit (`/api/quiz_submit/<story_id>`)
   - Daily quiz auto-generated from the most recent story (`/daily_quiz`)
-
-### Student Showcase Pages
-- Loads a class roster from a CSV (`userlist.csv`) and renders student profile pages
-- Shows their story covers + generated metadata such as:
-  - topic / field / grade
-  - summary + quote cached into DB for reuse
-
 ---
 
 ## Tech Stack
